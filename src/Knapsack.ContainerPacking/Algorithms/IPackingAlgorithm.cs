@@ -14,6 +14,6 @@ namespace Knapsack.ContainerPacking.Algorithms
 		/// <param name="container">The container.</param>
 		/// <param name="items">The items to pack.</param>
 		/// <returns>The algorithm packing result.</returns>
-		AlgorithmPackingResult Run(Bin container, List<Item> items, bool biggerFirst = false);
+		AlgorithmPackingResult Run(Bin container, List<Item> items, bool shouldSortBothDirections = true);
     }
 }

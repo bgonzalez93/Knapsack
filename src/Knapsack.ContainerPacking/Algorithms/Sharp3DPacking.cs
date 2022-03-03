@@ -15,13 +15,34 @@ namespace Knapsack.ContainerPacking.Algorithms
         private Bin _bin;
         private readonly List<Item> _items = new List<Item>();
 
-        public AlgorithmPackingResult Run(Bin container, List<Item> items, bool biggerFirst = false)
+        public AlgorithmPackingResult Run(Bin container, List<Item> items, bool shouldSortBothDirections = true)
         {
             _bin = container;
 
             SetGlobalItems(items);
 
-            var sortedItems = (biggerFirst ? _items.OrderByDescending(x => x.Volume) : _items.OrderBy(x => x.Volume)).ToList();
+            var itemsToPack = new List<Item>(_items);
+
+            var smallerSortFirstResult = PackSortedItems(false, itemsToPack);
+
+            if (!shouldSortBothDirections || smallerSortFirstResult.UnpackedItems.Count == 0)
+            {
+                return smallerSortFirstResult;
+            }
+
+            _bin.Items.Clear();
+            _bin.UnfittedItems.Clear();
+
+            var biggerFirstResult = PackSortedItems(true, itemsToPack);
+
+            return smallerSortFirstResult.PackedItems.Count >= biggerFirstResult.PackedItems.Count
+                ? smallerSortFirstResult
+                : biggerFirstResult;
+        }
+
+        private AlgorithmPackingResult PackSortedItems(bool biggerFirst, List<Item> items)
+        {
+            var sortedItems = (biggerFirst ? items.OrderByDescending(x => x.Volume) : items.OrderBy(x => x.Volume));
 
             foreach (var item in sortedItems)
             {

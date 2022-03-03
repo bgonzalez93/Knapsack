@@ -20,7 +20,7 @@ namespace Knapsack.ContainerPacking.Algorithms
 		/// <param name="container">The container to pack items into.</param>
 		/// <param name="items">The items to pack.</param>
 		/// <returns>The bin packing result.</returns>
-		public AlgorithmPackingResult Run(Bin container, List<Item> items, bool biggerFirst = false)
+		public AlgorithmPackingResult Run(Bin container, List<Item> items, bool shouldSortBothDirections = true)
 		{
 			Initialize(container, items);
 			ExecuteIterations(container);
