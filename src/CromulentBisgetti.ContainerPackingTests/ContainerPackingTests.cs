@@ -3,8 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 using System.IO;
 using System.Collections.Generic;
-using Algorithms;
-using Entities;
+using Knapsack.ContainerPacking;
+using Knapsack.ContainerPacking.Algorithms;
+using Knapsack.ContainerPacking.Entities;
 
 namespace CromulentBisgetti.ContainerPackingTests
 {
