@@ -1,4 +1,4 @@
-﻿namespace Entities
+﻿namespace Knapsack.ContainerPacking.Entities
 {
     internal enum Axis
     {

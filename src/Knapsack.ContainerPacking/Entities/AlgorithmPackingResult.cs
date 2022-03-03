@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Entities
+namespace Knapsack.ContainerPacking.Entities
 {
 	[DataContract]
 	public class AlgorithmPackingResult

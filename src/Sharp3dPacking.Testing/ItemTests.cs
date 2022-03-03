@@ -1,4 +1,4 @@
-﻿using Entities;
+﻿using Knapsack.ContainerPacking.Entities;
 using Xunit;
 
 namespace Sharp3dPacking.Testing;

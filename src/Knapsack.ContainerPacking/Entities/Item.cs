@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Entities
+namespace Knapsack.ContainerPacking.Entities
 {
     /// <summary>
     /// An item to be packed. Also used to hold post-packing details for the item.

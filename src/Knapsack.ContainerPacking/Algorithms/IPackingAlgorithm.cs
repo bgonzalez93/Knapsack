@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Entities;
+using Knapsack.ContainerPacking.Entities;
 
-namespace Algorithms
+namespace Knapsack.ContainerPacking.Algorithms
 {
 	/// <summary>
 	/// Interface for the packing algorithms in this project.

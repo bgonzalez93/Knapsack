@@ -1,4 +1,4 @@
-namespace Entities
+namespace Knapsack.ContainerPacking.Entities
 {
 	/// <summary>
 	/// The container to pack items into.

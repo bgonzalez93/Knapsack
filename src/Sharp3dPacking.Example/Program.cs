@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
-using Entities;
+using Knapsack.ContainerPacking;
+using Knapsack.ContainerPacking.Entities;
 
 namespace Sharp3dPacking.Example;
 

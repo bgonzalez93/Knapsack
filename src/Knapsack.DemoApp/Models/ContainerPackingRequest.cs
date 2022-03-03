@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Entities;
+using Knapsack.ContainerPacking.Entities;
 
 namespace Knapsack.DemoApp.Models
 {

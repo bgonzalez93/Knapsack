@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Entities;
+using Knapsack.ContainerPacking.Entities;
 
-namespace Algorithms
+namespace Knapsack.ContainerPacking.Algorithms
 {
 	/// <summary>
 	/// A 3D bin packing algorithm originally ported from https://github.com/keremdemirer/3dbinpackingjs,

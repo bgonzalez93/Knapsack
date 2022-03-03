@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Entities
+namespace Knapsack.ContainerPacking.Entities
 {
     public class Bin : Container
     {

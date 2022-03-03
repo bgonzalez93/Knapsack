@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Entities;
+using Knapsack.ContainerPacking;
+using Knapsack.ContainerPacking.Entities;
 using Knapsack.DemoApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
