@@ -212,7 +212,7 @@ namespace Knapsack.ContainerPacking.Algorithms
 					if (layerinlayer == 0)
 					{
 						prelayer = layerThickness;
-						lilz = smallestZ.CumZ;
+						lilz = smallestZ.RightCornerZ;
 					}
 
 					cboxi = bboxi;
@@ -235,8 +235,8 @@ namespace Knapsack.ContainerPacking.Algorithms
 						if (smallestZ.Pre == null)
 						{
 							trash = smallestZ.Post;
-							smallestZ.CumX = smallestZ.Post.CumX;
-							smallestZ.CumZ = smallestZ.Post.CumZ;
+							smallestZ.RightCornerX = smallestZ.Post.RightCornerX;
+							smallestZ.RightCornerZ = smallestZ.Post.RightCornerZ;
 							smallestZ.Post = smallestZ.Post.Post;
 							if (smallestZ.Post != null)
 							{
@@ -246,11 +246,11 @@ namespace Knapsack.ContainerPacking.Algorithms
 						else if (smallestZ.Post == null)
 						{
 							smallestZ.Pre.Post = null;
-							smallestZ.Pre.CumX = smallestZ.CumX;
+							smallestZ.Pre.RightCornerX = smallestZ.RightCornerX;
 						}
 						else
 						{
-							if (smallestZ.Pre.CumZ == smallestZ.Post.CumZ)
+							if (smallestZ.Pre.RightCornerZ == smallestZ.Post.RightCornerZ)
 							{
 								smallestZ.Pre.Post = smallestZ.Post.Post;
 
@@ -259,16 +259,16 @@ namespace Knapsack.ContainerPacking.Algorithms
 									smallestZ.Post.Post.Pre = smallestZ.Pre;
 								}
 
-								smallestZ.Pre.CumX = smallestZ.Post.CumX;
+								smallestZ.Pre.RightCornerX = smallestZ.Post.RightCornerX;
 							}
 							else
 							{
 								smallestZ.Pre.Post = smallestZ.Post;
 								smallestZ.Post.Pre = smallestZ.Pre;
 
-								if (smallestZ.Pre.CumZ < smallestZ.Post.CumZ)
+								if (smallestZ.Pre.RightCornerZ < smallestZ.Post.RightCornerZ)
 								{
-									smallestZ.Pre.CumX = smallestZ.CumX;
+									smallestZ.Pre.RightCornerX = smallestZ.RightCornerX;
 								}
 							}
 						}
@@ -511,7 +511,7 @@ namespace Knapsack.ContainerPacking.Algorithms
 
 			while (scrapmemb.Post != null)
 			{
-				if (scrapmemb.Post.CumZ < smallestZ.CumZ)
+				if (scrapmemb.Post.RightCornerZ < smallestZ.RightCornerZ)
 				{
 					smallestZ = scrapmemb.Post;
 				}
@@ -747,8 +747,8 @@ namespace Knapsack.ContainerPacking.Algorithms
 				return;
 			}
 
-			scrapfirst.CumX = px;
-			scrapfirst.CumZ = 0;
+			scrapfirst.RightCornerX = px;
+			scrapfirst.RightCornerZ = 0;
 
 			for (; !quit;)
 			{
@@ -758,8 +758,8 @@ namespace Knapsack.ContainerPacking.Algorithms
 				{
 					//*** SITUATION-1: NO BOXES ON THE RIGHT AND LEFT SIDES ***
 
-					lenx = smallestZ.CumX;
-					lpz = remainpz - smallestZ.CumZ;
+					lenx = smallestZ.RightCornerX;
+					lpz = remainpz - smallestZ.RightCornerZ;
 					FindBox(lenx, layerThickness, remainpy, lpz, lpz);
 					CheckFound();
 
@@ -768,10 +768,10 @@ namespace Knapsack.ContainerPacking.Algorithms
 
 					itemsToPack[cboxi].CoordX = 0;
 					itemsToPack[cboxi].CoordY = packedy;
-					itemsToPack[cboxi].CoordZ = smallestZ.CumZ;
-					if (cboxx == smallestZ.CumX)
+					itemsToPack[cboxi].CoordZ = smallestZ.RightCornerZ;
+					if (cboxx == smallestZ.RightCornerX)
 					{
-						smallestZ.CumZ = smallestZ.CumZ + cboxz;
+						smallestZ.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 					}
 					else
 					{
@@ -779,19 +779,19 @@ namespace Knapsack.ContainerPacking.Algorithms
 
 						smallestZ.Post.Post = null;
 						smallestZ.Post.Pre = smallestZ;
-						smallestZ.Post.CumX = smallestZ.CumX;
-						smallestZ.Post.CumZ = smallestZ.CumZ;
-						smallestZ.CumX = cboxx;
-						smallestZ.CumZ = smallestZ.CumZ + cboxz;
+						smallestZ.Post.RightCornerX = smallestZ.RightCornerX;
+						smallestZ.Post.RightCornerZ = smallestZ.RightCornerZ;
+						smallestZ.RightCornerX = cboxx;
+						smallestZ.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 					}
 				}
 				else if (smallestZ.Pre == null)
 				{
 					//*** SITUATION-2: NO BOXES ON THE LEFT SIDE ***
 
-					lenx = smallestZ.CumX;
-					lenz = smallestZ.Post.CumZ - smallestZ.CumZ;
-					lpz = remainpz - smallestZ.CumZ;
+					lenx = smallestZ.RightCornerX;
+					lenz = smallestZ.Post.RightCornerZ - smallestZ.RightCornerZ;
+					lpz = remainpz - smallestZ.RightCornerZ;
 					FindBox(lenx, layerThickness, remainpy, lenz, lpz);
 					CheckFound();
 
@@ -799,15 +799,15 @@ namespace Knapsack.ContainerPacking.Algorithms
 					if (evened) continue;
 
 					itemsToPack[cboxi].CoordY = packedy;
-					itemsToPack[cboxi].CoordZ = smallestZ.CumZ;
-					if (cboxx == smallestZ.CumX)
+					itemsToPack[cboxi].CoordZ = smallestZ.RightCornerZ;
+					if (cboxx == smallestZ.RightCornerX)
 					{
 						itemsToPack[cboxi].CoordX = 0;
 
-						if (smallestZ.CumZ + cboxz == smallestZ.Post.CumZ)
+						if (smallestZ.RightCornerZ + cboxz == smallestZ.Post.RightCornerZ)
 						{
-							smallestZ.CumZ = smallestZ.Post.CumZ;
-							smallestZ.CumX = smallestZ.Post.CumX;
+							smallestZ.RightCornerZ = smallestZ.Post.RightCornerZ;
+							smallestZ.RightCornerX = smallestZ.Post.RightCornerX;
 							trash = smallestZ.Post;
 							smallestZ.Post = smallestZ.Post.Post;
 
@@ -818,16 +818,16 @@ namespace Knapsack.ContainerPacking.Algorithms
 						}
 						else
 						{
-							smallestZ.CumZ = smallestZ.CumZ + cboxz;
+							smallestZ.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 						}
 					}
 					else
 					{
-						itemsToPack[cboxi].CoordX = smallestZ.CumX - cboxx;
+						itemsToPack[cboxi].CoordX = smallestZ.RightCornerX - cboxx;
 
-						if (smallestZ.CumZ + cboxz == smallestZ.Post.CumZ)
+						if (smallestZ.RightCornerZ + cboxz == smallestZ.Post.RightCornerZ)
 						{
-							smallestZ.CumX = smallestZ.CumX - cboxx;
+							smallestZ.RightCornerX = smallestZ.RightCornerX - cboxx;
 						}
 						else
 						{
@@ -836,9 +836,9 @@ namespace Knapsack.ContainerPacking.Algorithms
 							smallestZ.Post.Pre.Post = smallestZ.Post;
 							smallestZ.Post.Pre.Pre = smallestZ;
 							smallestZ.Post = smallestZ.Post.Pre;
-							smallestZ.Post.CumX = smallestZ.CumX;
-							smallestZ.CumX = smallestZ.CumX - cboxx;
-							smallestZ.Post.CumZ = smallestZ.CumZ + cboxz;
+							smallestZ.Post.RightCornerX = smallestZ.RightCornerX;
+							smallestZ.RightCornerX = smallestZ.RightCornerX - cboxx;
+							smallestZ.Post.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 						}
 					}
 				}
@@ -846,9 +846,9 @@ namespace Knapsack.ContainerPacking.Algorithms
 				{
 					//*** SITUATION-3: NO BOXES ON THE RIGHT SIDE ***
 
-					lenx = smallestZ.CumX - smallestZ.Pre.CumX;
-					lenz = smallestZ.Pre.CumZ - smallestZ.CumZ;
-					lpz = remainpz - smallestZ.CumZ;
+					lenx = smallestZ.RightCornerX - smallestZ.Pre.RightCornerX;
+					lenz = smallestZ.Pre.RightCornerZ - smallestZ.RightCornerZ;
+					lpz = remainpz - smallestZ.RightCornerZ;
 					FindBox(lenx, layerThickness, remainpy, lenz, lpz);
 					CheckFound();
 
@@ -856,26 +856,26 @@ namespace Knapsack.ContainerPacking.Algorithms
 					if (evened) continue;
 
 					itemsToPack[cboxi].CoordY = packedy;
-					itemsToPack[cboxi].CoordZ = smallestZ.CumZ;
-					itemsToPack[cboxi].CoordX = smallestZ.Pre.CumX;
+					itemsToPack[cboxi].CoordZ = smallestZ.RightCornerZ;
+					itemsToPack[cboxi].CoordX = smallestZ.Pre.RightCornerX;
 
-					if (cboxx == smallestZ.CumX - smallestZ.Pre.CumX)
+					if (cboxx == smallestZ.RightCornerX - smallestZ.Pre.RightCornerX)
 					{
-						if (smallestZ.CumZ + cboxz == smallestZ.Pre.CumZ)
+						if (smallestZ.RightCornerZ + cboxz == smallestZ.Pre.RightCornerZ)
 						{
-							smallestZ.Pre.CumX = smallestZ.CumX;
+							smallestZ.Pre.RightCornerX = smallestZ.RightCornerX;
 							smallestZ.Pre.Post = null;
 						}
 						else
 						{
-							smallestZ.CumZ = smallestZ.CumZ + cboxz;
+							smallestZ.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 						}
 					}
 					else
 					{
-						if (smallestZ.CumZ + cboxz == smallestZ.Pre.CumZ)
+						if (smallestZ.RightCornerZ + cboxz == smallestZ.Pre.RightCornerZ)
 						{
-							smallestZ.Pre.CumX = smallestZ.Pre.CumX + cboxx;
+							smallestZ.Pre.RightCornerX = smallestZ.Pre.RightCornerX + cboxx;
 						}
 						else
 						{
@@ -884,20 +884,20 @@ namespace Knapsack.ContainerPacking.Algorithms
 							smallestZ.Pre.Post.Pre = smallestZ.Pre;
 							smallestZ.Pre.Post.Post = smallestZ;
 							smallestZ.Pre = smallestZ.Pre.Post;
-							smallestZ.Pre.CumX = smallestZ.Pre.Pre.CumX + cboxx;
-							smallestZ.Pre.CumZ = smallestZ.CumZ + cboxz;
+							smallestZ.Pre.RightCornerX = smallestZ.Pre.Pre.RightCornerX + cboxx;
+							smallestZ.Pre.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 						}
 					}
 				}
-				else if (smallestZ.Pre.CumZ == smallestZ.Post.CumZ)
+				else if (smallestZ.Pre.RightCornerZ == smallestZ.Post.RightCornerZ)
 				{
 					//*** SITUATION-4: THERE ARE BOXES ON BOTH OF THE SIDES ***
 
 					//*** SUBSITUATION-4A: SIDES ARE EQUAL TO EACH OTHER ***
 
-					lenx = smallestZ.CumX - smallestZ.Pre.CumX;
-					lenz = smallestZ.Pre.CumZ - smallestZ.CumZ;
-					lpz = remainpz - smallestZ.CumZ;
+					lenx = smallestZ.RightCornerX - smallestZ.Pre.RightCornerX;
+					lenz = smallestZ.Pre.RightCornerZ - smallestZ.RightCornerZ;
+					lpz = remainpz - smallestZ.RightCornerZ;
 
 					FindBox(lenx, layerThickness, remainpy, lenz, lpz);
 					CheckFound();
@@ -906,15 +906,15 @@ namespace Knapsack.ContainerPacking.Algorithms
 					if (evened) continue;
 
 					itemsToPack[cboxi].CoordY = packedy;
-					itemsToPack[cboxi].CoordZ = smallestZ.CumZ;
+					itemsToPack[cboxi].CoordZ = smallestZ.RightCornerZ;
 
-					if (cboxx == smallestZ.CumX - smallestZ.Pre.CumX)
+					if (cboxx == smallestZ.RightCornerX - smallestZ.Pre.RightCornerX)
 					{
-						itemsToPack[cboxi].CoordX = smallestZ.Pre.CumX;
+						itemsToPack[cboxi].CoordX = smallestZ.Pre.RightCornerX;
 
-						if (smallestZ.CumZ + cboxz == smallestZ.Post.CumZ)
+						if (smallestZ.RightCornerZ + cboxz == smallestZ.Post.RightCornerZ)
 						{
-							smallestZ.Pre.CumX = smallestZ.Post.CumX;
+							smallestZ.Pre.RightCornerX = smallestZ.Post.RightCornerX;
 
 							if (smallestZ.Post.Post != null)
 							{
@@ -928,46 +928,46 @@ namespace Knapsack.ContainerPacking.Algorithms
 						}
 						else
 						{
-							smallestZ.CumZ = smallestZ.CumZ + cboxz;
+							smallestZ.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 						}
 					}
-					else if (smallestZ.Pre.CumX < px - smallestZ.CumX)
+					else if (smallestZ.Pre.RightCornerX < px - smallestZ.RightCornerX)
 					{
-						if (smallestZ.CumZ + cboxz == smallestZ.Pre.CumZ)
+						if (smallestZ.RightCornerZ + cboxz == smallestZ.Pre.RightCornerZ)
 						{
-							smallestZ.CumX = smallestZ.CumX - cboxx;
-							itemsToPack[cboxi].CoordX = smallestZ.CumX;
+							smallestZ.RightCornerX = smallestZ.RightCornerX - cboxx;
+							itemsToPack[cboxi].CoordX = smallestZ.RightCornerX;
 						}
 						else
 						{
-							itemsToPack[cboxi].CoordX = smallestZ.Pre.CumX;
+							itemsToPack[cboxi].CoordX = smallestZ.Pre.RightCornerX;
 							smallestZ.Pre.Post = new ScrapPad();
 
 							smallestZ.Pre.Post.Pre = smallestZ.Pre;
 							smallestZ.Pre.Post.Post = smallestZ;
 							smallestZ.Pre = smallestZ.Pre.Post;
-							smallestZ.Pre.CumX = smallestZ.Pre.Pre.CumX + cboxx;
-							smallestZ.Pre.CumZ = smallestZ.CumZ + cboxz;
+							smallestZ.Pre.RightCornerX = smallestZ.Pre.Pre.RightCornerX + cboxx;
+							smallestZ.Pre.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 						}
 					}
 					else
 					{
-						if (smallestZ.CumZ + cboxz == smallestZ.Pre.CumZ)
+						if (smallestZ.RightCornerZ + cboxz == smallestZ.Pre.RightCornerZ)
 						{
-							smallestZ.Pre.CumX = smallestZ.Pre.CumX + cboxx;
-							itemsToPack[cboxi].CoordX = smallestZ.Pre.CumX;
+							smallestZ.Pre.RightCornerX = smallestZ.Pre.RightCornerX + cboxx;
+							itemsToPack[cboxi].CoordX = smallestZ.Pre.RightCornerX;
 						}
 						else
 						{
-							itemsToPack[cboxi].CoordX = smallestZ.CumX - cboxx;
+							itemsToPack[cboxi].CoordX = smallestZ.RightCornerX - cboxx;
 							smallestZ.Post.Pre = new ScrapPad();
 
 							smallestZ.Post.Pre.Post = smallestZ.Post;
 							smallestZ.Post.Pre.Pre = smallestZ;
 							smallestZ.Post = smallestZ.Post.Pre;
-							smallestZ.Post.CumX = smallestZ.CumX;
-							smallestZ.Post.CumZ = smallestZ.CumZ + cboxz;
-							smallestZ.CumX = smallestZ.CumX - cboxx;
+							smallestZ.Post.RightCornerX = smallestZ.RightCornerX;
+							smallestZ.Post.RightCornerZ = smallestZ.RightCornerZ + cboxz;
+							smallestZ.RightCornerX = smallestZ.RightCornerX - cboxx;
 						}
 					}
 				}
@@ -975,9 +975,9 @@ namespace Knapsack.ContainerPacking.Algorithms
 				{
 					//*** SUBSITUATION-4B: SIDES ARE NOT EQUAL TO EACH OTHER ***
 
-					lenx = smallestZ.CumX - smallestZ.Pre.CumX;
-					lenz = smallestZ.Pre.CumZ - smallestZ.CumZ;
-					lpz = remainpz - smallestZ.CumZ;
+					lenx = smallestZ.RightCornerX - smallestZ.Pre.RightCornerX;
+					lenz = smallestZ.Pre.RightCornerZ - smallestZ.RightCornerZ;
+					lpz = remainpz - smallestZ.RightCornerZ;
 					FindBox(lenx, layerThickness, remainpy, lenz, lpz);
 					CheckFound();
 
@@ -985,32 +985,32 @@ namespace Knapsack.ContainerPacking.Algorithms
 					if (evened) continue;
 
 					itemsToPack[cboxi].CoordY = packedy;
-					itemsToPack[cboxi].CoordZ = smallestZ.CumZ;
-					itemsToPack[cboxi].CoordX = smallestZ.Pre.CumX;
+					itemsToPack[cboxi].CoordZ = smallestZ.RightCornerZ;
+					itemsToPack[cboxi].CoordX = smallestZ.Pre.RightCornerX;
 
-					if (cboxx == (smallestZ.CumX - smallestZ.Pre.CumX))
+					if (cboxx == (smallestZ.RightCornerX - smallestZ.Pre.RightCornerX))
 					{
-						if ((smallestZ.CumZ + cboxz) == smallestZ.Pre.CumZ)
+						if ((smallestZ.RightCornerZ + cboxz) == smallestZ.Pre.RightCornerZ)
 						{
-							smallestZ.Pre.CumX = smallestZ.CumX;
+							smallestZ.Pre.RightCornerX = smallestZ.RightCornerX;
 							smallestZ.Pre.Post = smallestZ.Post;
 							smallestZ.Post.Pre = smallestZ.Pre;
 						}
 						else
 						{
-							smallestZ.CumZ = smallestZ.CumZ + cboxz;
+							smallestZ.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 						}
 					}
 					else
 					{
-						if ((smallestZ.CumZ + cboxz) == smallestZ.Pre.CumZ)
+						if ((smallestZ.RightCornerZ + cboxz) == smallestZ.Pre.RightCornerZ)
 						{
-							smallestZ.Pre.CumX = smallestZ.Pre.CumX + cboxx;
+							smallestZ.Pre.RightCornerX = smallestZ.Pre.RightCornerX + cboxx;
 						}
-						else if (smallestZ.CumZ + cboxz == smallestZ.Post.CumZ)
+						else if (smallestZ.RightCornerZ + cboxz == smallestZ.Post.RightCornerZ)
 						{
-							itemsToPack[cboxi].CoordX = smallestZ.CumX - cboxx;
-							smallestZ.CumX = smallestZ.CumX - cboxx;
+							itemsToPack[cboxi].CoordX = smallestZ.RightCornerX - cboxx;
+							smallestZ.RightCornerX = smallestZ.RightCornerX - cboxx;
 						}
 						else
 						{
@@ -1019,8 +1019,8 @@ namespace Knapsack.ContainerPacking.Algorithms
 							smallestZ.Pre.Post.Pre = smallestZ.Pre;
 							smallestZ.Pre.Post.Post = smallestZ;
 							smallestZ.Pre = smallestZ.Pre.Post;
-							smallestZ.Pre.CumX = smallestZ.Pre.Pre.CumX + cboxx;
-							smallestZ.Pre.CumZ = smallestZ.CumZ + cboxz;
+							smallestZ.Pre.RightCornerX = smallestZ.Pre.Pre.RightCornerX + cboxx;
+							smallestZ.Pre.RightCornerZ = smallestZ.RightCornerZ + cboxz;
 						}
 					}
 				}
@@ -1188,7 +1188,7 @@ namespace Knapsack.ContainerPacking.Algorithms
 			/// <value>
 			/// The x coordinate of the gap's right corner.
 			/// </value>
-			public decimal CumX { get; set; }
+			public decimal RightCornerX { get; set; }
 
 			/// <summary>
 			/// Gets or sets the z coordinate of the gap's right corner.
@@ -1196,7 +1196,7 @@ namespace Knapsack.ContainerPacking.Algorithms
 			/// <value>
 			/// The z coordinate of the gap's right corner.
 			/// </value>
-			public decimal CumZ { get; set; }
+			public decimal RightCornerZ { get; set; }
 
 			/// <summary>
 			/// Gets or sets the following entry.
