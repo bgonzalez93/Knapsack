@@ -25,20 +25,21 @@ namespace Knapsack.ContainerPacking.Entities
         /// <param name="width">The length of another of the three item dimensions.</param>
         /// <param name="height">The length of the other of the three item dimensions.</param>
         /// <param name="quantity">The item quantity.</param>
-        public Item(int id, decimal length, decimal width, decimal height, int quantity, RotationType rotationType = RotationType.DepthHeightWidth, Position position = default)
-		{
-			ID = id;
-			Length = length;
-			Width = width;
-			Height = height;
-			volume = length * width * height;
-			Quantity = quantity;
-         
+        public Item(int id, decimal length, decimal width, decimal height, int quantity,
+            RotationType rotationType = RotationType.DepthHeightWidth, Position? position = default)
+        {
+            ID = id;
+            Length = length;
+            Width = width;
+            Height = height;
+            volume = length * width * height;
+            Quantity = quantity;
+
             RotationType = rotationType;
             Position = position ?? Position.StartingPosition;
         }
 
-		#endregion Constructors
+        #endregion Constructors
 
 		#region Public Properties
 
